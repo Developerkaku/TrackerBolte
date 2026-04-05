@@ -33,7 +33,7 @@
             try {
                 let userid = prompt("Enter the user id(n8n table)");
                 // Register Service Worker
-                const register = await navigator.serviceWorker.register('/sw.js');
+                const register = await navigator.serviceWorker.register('./sw.js');
 
                 // Ensure Worker is active
                 await navigator.serviceWorker.ready;
