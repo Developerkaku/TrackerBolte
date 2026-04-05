@@ -11,7 +11,7 @@
     <button id="notify-btn">Enable!</button>
 
     <script>
-        const VAPID_PUBLIC_KEY = 'BDnQZdYK_lYsKz6IC1euMG2wOOt5EzM2JdarY33QyTizdP0jg6YX6cBmyY8p36VGzZo4xoxzUExzHXZSol-eztM';
+        const VAPID_PUBLIC_KEY = 'BDHhsV1hCo1eOyHAMCrCYppO5_70wFNiA_Fjen83MzgHJ84z4qh5-LzPyThUI96l-qljohypxJHv0pPu0Nu8qn0';
 
         // 1. Mandatory conversion function
         function urlBase64ToUint8Array(base64String) {
@@ -53,7 +53,7 @@
 
                 // console.log("SUCCESS! COPY THIS TO n8n:");
 
-                const res = await fetch('http://localhost:5678/webhook/d64f3bb4-121f-4307-9730-9c0e56325efe', {
+                const res = await fetch('https://n8n-on-cloud-kfba.onrender.com/webhook/d64f3bb4-121f-4307-9730-9c0e56325efe', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
