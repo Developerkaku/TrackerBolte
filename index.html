@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackerBolte</title>
+</head>
+
+<body style="background-color: black;">
+    <button id="notify-btn">Enable!</button>
+
+    <script>
+        const VAPID_PUBLIC_KEY = 'BDHhsV1hCo1eOyHAMCrCYppO5_70wFNiA_Fjen83MzgHJ84z4qh5-LzPyThUI96l-qljohypxJHv0pPu0Nu8qn0';
+
+        // 1. Mandatory conversion function
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+
+        document.getElementById('notify-btn').addEventListener('click', async () => {
+            try {
+                let userid = prompt("Enter the user id(n8n table)");
+                // Register Service Worker
+                const register = await navigator.serviceWorker.register('/sw.js');
+
+                // Ensure Worker is active
+                await navigator.serviceWorker.ready;
+
+                // Request Permission
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    console.error("Permission denied.");
+                    return;
+                }
+
+                // Get Subscription Object using the CONVERTED KEY
+                const subscription = await register.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+                });
+
+                // console.log("SUCCESS! COPY THIS TO n8n:");
+
+                const res = await fetch('https://n8n-on-cloud-kfba.onrender.com/webhook/d64f3bb4-121f-4307-9730-9c0e56325efe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userid: userid,
+                        subscription: subscription
+                    })
+                });
+
+                if (!res.ok) throw new Error('Backend rejection');
+
+                alert('Subscription successful');
+                // console.log(JSON.stringify(subscription));
+
+            } catch (err) {
+                console.error("Critical Error during subscription:", err);
+            }
+        });
+    </script>
+</body>
+
+</html>
