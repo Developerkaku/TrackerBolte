@@ -1,0 +1,13 @@
+{
+  "subscription": {
+    "endpoint": "https://fcm.googleapis.com/fcm/send/...",
+    "keys": {
+      "p256dh": "...",
+      "auth": "..."
+    }
+  },
+  "payload": {
+    "title": "Alert",
+    "body": "Message from n8n"
+  }
+}
