@@ -16,7 +16,11 @@ webpush.setVapidDetails(
   VAPID_KEYS.privateKey
 );
 
+console.log("server running!!");
 app.post('/send-notification', async (req, res) => {
+
+  console.log("Post received!");
+  
   const { subscription, payload } = req.body;
 
   try {
